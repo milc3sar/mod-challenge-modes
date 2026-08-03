@@ -442,7 +442,7 @@ public:
         player->GetSession()->KickPlayer(std::string("Tu personaje Hardcore ha muerto y ya no puede continuar."));
     }
 
-    void OnPlayerPVPKill(Player* /*killer*/, Player* killed) override
+    void OnPlayerPVPKill(Player* killer, Player* killed) override
     {
         if (!sChallengeModes->challengeEnabledForPlayer(SETTING_HARDCORE, killed))
         {
