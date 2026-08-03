@@ -458,7 +458,7 @@ public:
         AnnounceHardcoreDeath(killed, cause);
     }
 
-    void OnPlayerKilledByCreature(Creature* /*killer*/, Player* killed) override
+    void OnPlayerKilledByCreature(Creature* killer, Player* killed) override
     {
         if (!sChallengeModes->challengeEnabledForPlayer(SETTING_HARDCORE, killed))
         {
