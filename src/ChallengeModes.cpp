@@ -3,7 +3,6 @@
  */
 
 #include "ChallengeModes.h"
-#include "World.h"
 
 ChallengeModes* ChallengeModes::instance()
 {
@@ -417,7 +416,7 @@ private:
             cause
         );
 
-        sWorld->SendServerMessage(SERVER_MSG_STRING, message);
+        ChatHandler(nullptr).SendGlobalSysMessage(message.c_str());
     }
 
 public:
