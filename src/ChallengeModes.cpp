@@ -448,6 +448,7 @@ public:
         {
             return;
         }
+
         killed->UpdatePlayerSetting("mod-challenge-modes", HARDCORE_DEAD, 1);
 
         std::string cause = killer
