@@ -3,6 +3,7 @@
  */
 
 #include "ChallengeModes.h"
+#include "World.h"
 
 ChallengeModes* ChallengeModes::instance()
 {
@@ -404,6 +405,21 @@ private:
 
 class ChallengeMode_Hardcore : public ChallengeMode
 {
+private:
+    static void AnnounceHardcoreDeath(Player* player, std::string const& cause)
+    {
+        std::string message = Acore::StringFormat(
+            "|cffff0000[Hardcore]|r "
+            "|cffffd700{}|r ha muerto en el nivel "
+            "|cff00ff00{}|r. {}",
+            player->GetName(),
+            player->GetLevel(),
+            cause
+        );
+
+        sWorld->SendServerMessage(SERVER_MSG_STRING, message);
+    }
+
 public:
     ChallengeMode_Hardcore() : ChallengeMode("ChallengeMode_Hardcore", SETTING_HARDCORE) {}
 
@@ -434,6 +450,12 @@ public:
             return;
         }
         killed->UpdatePlayerSetting("mod-challenge-modes", HARDCORE_DEAD, 1);
+
+        std::string cause = killer
+            ? Acore::StringFormat("Fue derrotado por {}.", killer->GetName())
+            : "Murió en combate PvP.";
+
+        AnnounceHardcoreDeath(killed, cause);
     }
 
     void OnPlayerKilledByCreature(Creature* /*killer*/, Player* killed) override
@@ -443,6 +465,12 @@ public:
             return;
         }
         killed->UpdatePlayerSetting("mod-challenge-modes", HARDCORE_DEAD, 1);
+
+        std::string cause = killer
+            ? Acore::StringFormat("Fue derrotado por {}.", killer->GetName())
+            : "Murió en combate.";
+
+        AnnounceHardcoreDeath(killed, cause);
     }
 
     void OnPlayerResurrect(Player* player, float /*restore_percent*/, bool& /*applySickness*/) override
